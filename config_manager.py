@@ -33,7 +33,7 @@ def get_device_config(i):
         'address': os.getenv(f"ADDRESS{i}"),
         'endpoint': os.getenv(f"ENDPOINT{i}"),
         'site': os.getenv(f"SITE{i}"),
-        'root_dir': os.getenv("ROOT_DIRECTORY"),
+        'root_dir': os.path.dirname(__file__),
         'api_key': os.getenv(f"API_KEY{i}"),
         'username': os.getenv("FW_USERNAME"),
         'password': os.getenv("FW_PASSWORD")

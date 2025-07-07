@@ -13,13 +13,14 @@ def get_sharepoint_credentials():
     return {
         'username': os.getenv("SHAREPOINT_USERNAME"),
         'password': os.getenv("SHAREPOINT_PASSWORD"),
-        'site_url': "https://privygate.sharepoint.com/sites/BlueTeamLibrary/"
+        'site_url': os.getenv("SITE_URL")
     }
 
 
 def create_target_folder_url(site):
     """Create target folder URL for SharePoint upload."""
-    return f"Shared%20Documents/BACKUP%20FILE%20CONFIG%20NETOWRK%20SECURITY/{site}"
+    return f"{os.getenv('SITE_URL_PATH')}/{site}"
+
 
 
 def authenticate_sharepoint(site_url, username, password):
