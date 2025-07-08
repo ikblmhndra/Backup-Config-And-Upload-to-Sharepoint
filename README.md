@@ -15,12 +15,12 @@ ___
 
 ## Table of Contents
 
--   [Overview](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#overview)
--   [Getting Started](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#getting-started)
-    -   [Prerequisites](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#prerequisites)
-    -   [Installation](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#installation)
-    -   [Usage](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#usage)
-    -   [Testing](https://gitdocify.com/readme/Backup-Config-And-Upload-to-Sharepoint#testing)
+-   [Overview](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#overview)
+-   [Getting Started](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#getting-started)
+    -   [Prerequisites](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#prerequisites)
+    -   [Installation](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#installation)
+    -   [Usage](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#usage)
+    -   [Testing](https://github.com/ikblmhndra/Backup-Config-And-Upload-to-Sharepoint?tab=readme-ov-file#testing)
 
 ___
 
