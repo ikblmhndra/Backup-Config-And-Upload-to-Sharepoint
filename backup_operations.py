@@ -11,10 +11,10 @@ def download_config(device_type, address, endpoint, api_key, session, site, toda
     """Download configuration from firewall device."""
     try:
         os.makedirs(f"{root_dir}/backup-file", exist_ok=True)
-        filename = f"PID_FW_{site}_{today}.xml"
+        filename = f"{site}_{today}.xml"
         output = f"{root_dir}/backup-file/{filename}"
 
-        if device_type == "FORTI":
+        if device_type == "FORTI":  # Fortigate
             response = session.get(
                 f"https://{address}/api/v2/monitor/system/config/backup", 
                 params={"scope": "global"}, 
@@ -36,7 +36,6 @@ def download_config(device_type, address, endpoint, api_key, session, site, toda
         print(f"[{site}] Download error: {e}")
         return None, None
 
-
 def create_backup_directory(root_dir):
     """Create backup directory if it doesn't exist."""
     backup_dir = f"{root_dir}/backup-file"
@@ -46,7 +45,7 @@ def create_backup_directory(root_dir):
 
 def generate_filename(site, today, extension="xml"):
     """Generate backup filename based on site and date."""
-    return f"PID_FW_{site}_{today}.{extension}"
+    return f"{site}_{today}.{extension}"
 
 
 def save_config_to_file(response, output_path):

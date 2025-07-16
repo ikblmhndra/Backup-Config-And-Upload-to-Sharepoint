@@ -3,6 +3,7 @@ Notification Service Module
 Handles Telegram notifications and message formatting
 """
 
+import os
 from datetime import datetime
 from telebot import simpleChat
 
@@ -21,7 +22,7 @@ def create_failure_message(site, reason, today):
     """Create failure notification message."""
     return (
         f"=== *Periodical System Backup Fail* ===\n"
-        f"Site : PID-FW-{site}\n"
+        f"Site : {site}\n"
         f"Status : Failed\n"
         f"Timestamp : {today}\n"
         f"Reason : {reason}"
@@ -30,13 +31,14 @@ def create_failure_message(site, reason, today):
 
 def create_success_message(site, target_file):
     """Create success notification message."""
+    TENANT = os.getenv("SHAREPOINT_TENANT")
     timestamp = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
     return (
         "=== *Periodical System Backup Success* ===\n"
-        f"Site : PID-FW-{site}\n"
+        f"Site : {site}\n"
         "Status : Success\n"
         f"Timestamp : {timestamp}\n"
-        f"Link : [File Backup PID-FW-{site}](https://privygate.sharepoint.com{target_file.serverRelativeUrl})"
+        f"Link : [File Backup {site}]({TENANT}{target_file.serverRelativeUrl})"
     )
 
 
@@ -44,7 +46,7 @@ def create_custom_message(site, status, timestamp, reason=None, link=None):
     """Create custom notification message."""
     message = (
         f"=== *Periodical System Backup {status}* ===\n"
-        f"Site : PID-FW-{site}\n"
+        f"Site : {site}\n"
         f"Status : {status}\n"
         f"Timestamp : {timestamp}\n"
     )
