@@ -5,6 +5,7 @@ Handles configuration download and file operations
 
 import os
 import requests
+from extrahop_backup import download_extrahop_config
 
 
 def download_config(device_type, address, endpoint, api_key, session, site, today, root_dir):
@@ -21,14 +22,27 @@ def download_config(device_type, address, endpoint, api_key, session, site, toda
                 verify=False, 
                 stream=True
             )
+            response.raise_for_status()
+            with open(output, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+
+        elif device_type == "EXTRAHOP":  # ExtraHop
+            output, filename = download_extrahop_config(
+                host=address,
+                api_key=api_key,
+                backup_name=f"{site}_{today}",
+                site=site,
+                today=today,
+                root_dir=root_dir
+            )
+
         else:  # Palo Alto
             response = requests.get(f"https://{address}/{endpoint}{api_key}", verify=False)
-        
-        response.raise_for_status()
-
-        with open(output, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
+            response.raise_for_status()
+            with open(output, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
         
         print(f"[{site}] Backup saved: {output}")
         return output, filename

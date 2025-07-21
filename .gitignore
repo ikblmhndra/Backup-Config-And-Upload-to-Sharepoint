@@ -3,4 +3,3 @@ __pycache__
 fortigate
 backup-file
 .gitignore
-extrahop_backup.py

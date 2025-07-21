@@ -16,6 +16,7 @@ from notification_service import (
     send_telegram_notification
 )
 from network_utils import check_device_connectivity
+from extrahop_backup import download_extrahop_config
 
 
 def process_single_firewall(i, constants):
@@ -110,9 +111,9 @@ def process_single_firewall(i, constants):
 
 
 def run_backup_process():
-    """Run the complete backup process for all firewalls."""
-    print("Starting firewall backup process...")
-    
+    """Run the complete backup process for all devices."""
+    print("Starting device backup process...")
+
     load_environment()
     constants = get_constants()
     
