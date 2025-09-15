@@ -29,16 +29,17 @@ def create_failure_message(site, reason, today):
     )
 
 
-def create_success_message(site, target_file):
+def create_success_message(site, target_file_url):
     """Create success notification message."""
     TENANT = os.getenv("SHAREPOINT_TENANT")
+    # print(f"FILE URL: {target_file_url}")
     timestamp = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
     return (
         "=== *Periodical System Backup Success* ===\n"
         f"Site : {site}\n"
         "Status : Success\n"
         f"Timestamp : {timestamp}\n"
-        f"Link : [File Backup {site}]({TENANT}{target_file.serverRelativeUrl})"
+        f"Link : [File Backup {site}]({target_file_url})\n"
     )
 
 

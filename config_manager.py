@@ -19,7 +19,8 @@ def get_constants():
     """Return application constants."""
     return {
         'today': datetime.strftime(datetime.today(), "%Y-%m-%d"),
-        'firewalls_iteration': [1, 2, 3, 4, 5, 6, 7],
+        'firewalls_iteration': [1, 2, 3, 4, 5, 6 ],
+        # 'firewalls_iteration': [1 ],
         'tele_group_id': os.getenv("TELEBOT_GROUP_ID"),
         'message_thread_id': 631,
         'hostname_file': f"{os.path.dirname(__file__)}/fortigate/fortigate_hostname.txt"

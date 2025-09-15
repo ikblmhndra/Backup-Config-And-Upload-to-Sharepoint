@@ -1,69 +1,50 @@
-"""
-SharePoint Uploader Module
-Handles file uploads to SharePoint
-"""
-
+# sharepoint_uploader.py
 import os
-from office365.sharepoint.client_context import ClientContext
-from office365.runtime.auth.authentication_context import AuthenticationContext
+from dotenv import load_dotenv
+from O365 import Account
 
+load_dotenv()
 
-def get_sharepoint_credentials():
-    """Get SharePoint credentials from environment variables."""
-    return {
-        'username': os.getenv("SHAREPOINT_USERNAME"),
-        'password': os.getenv("SHAREPOINT_PASSWORD"),
-        'site_url': os.getenv("SITE_URL")
-    }
+# Ambil env
+tenant_id = os.getenv("TENANT_ID")
+client_id = os.getenv("CLIENT_ID")
+client_secret = os.getenv("CLIENT_SECRET")
 
+# SharePoint info
+sharepoint_hostname = "privygate.sharepoint.com"
+sharepoint_site_name = "BlueTeamLibrary"
+base_folder = "BACKUP FILE CONFIG NETWORK SECURITY"
 
-def create_target_folder_url(site):
-    """Create target folder URL for SharePoint upload."""
-    return f"{os.getenv('SITE_URL_PATH')}/{site}"
+# Auth
+credentials = (client_id, client_secret)
+account = Account(credentials, auth_flow_type="credentials", tenant_id=tenant_id)
 
-
-
-def authenticate_sharepoint(site_url, username, password):
-    """Authenticate with SharePoint."""
-    auth_context = AuthenticationContext(site_url)
-    if auth_context.acquire_token_for_user(username, password):
-        return auth_context
-    return None
-
-
-def upload_file_to_sharepoint(ctx, file_path, filename, target_folder_url):
-    """Upload file to SharePoint folder."""
-    try:
-        with open(file_path, 'rb') as file:
-            file_content = file.read()
-            target_folder = ctx.web.get_folder_by_server_relative_url(target_folder_url)
-            target_file = target_folder.upload_file(filename, file_content)
-            ctx.execute_query()
-        return target_file
-    except Exception as e:
-        print(f"SharePoint upload error: {e}")
-        return None
-
+if not account.is_authenticated:
+    account.authenticate()
 
 def upload_to_sharepoint(output, filename, site):
-    """Main function to upload backup file to SharePoint."""
-    credentials = get_sharepoint_credentials()
-    target_folder_url = create_target_folder_url(site)
-    
-    auth_context = authenticate_sharepoint(
-        credentials['site_url'], 
-        credentials['username'], 
-        credentials['password']
-    )
-    
-    if auth_context:
+    try:
+        sharepoint = account.sharepoint()
+        sp_site = sharepoint.get_site(sharepoint_hostname, f"sites/{sharepoint_site_name}")
+        drive = sp_site.get_default_document_library()
+
+        # path tujuan: "Shared Documents/BACKUP FILE CONFIG NETWORK SECURITY/<site>"
+        target_path = f"{base_folder}/{site}"
+
         try:
-            ctx = ClientContext(credentials['site_url'], auth_context)
-            target_file = upload_file_to_sharepoint(ctx, output, filename, target_folder_url)
-            return target_file
-        except Exception as e:
-            print(f"[{site}] SharePoint upload failed: {e}")
-            return None
-    else:
-        print(f"[{site}] SharePoint authentication failed.")
+            folder_item = drive.get_item_by_path(target_path)
+        except Exception:
+            # kalau folder belum ada, bikin dulu
+            parent_folder = drive.get_item_by_path(base_folder)
+            folder_item = parent_folder.create_child_folder(site)
+
+        # Upload file → yang dipakai output (path lokal)
+        uploaded_item = folder_item.upload_file(output)
+
+        print(f"[{site}] Upload success: {uploaded_item.web_url}")
+        return uploaded_item.web_url
+
+    except Exception as e:
+        print(f"[{site}] SharePoint upload failed: {e}")
         return None
+

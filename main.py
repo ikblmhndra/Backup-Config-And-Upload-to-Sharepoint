@@ -89,6 +89,7 @@ def process_single_firewall(i, constants):
         return False
 
     # Upload to SharePoint
+    print(f"[{site}] Uploading backup to SharePoint...")
     target_file = upload_to_sharepoint(output, filename, site)
     if target_file:
         send_success_notification(

@@ -55,8 +55,9 @@ def regenerate_session_fortinet(address, username, password, hostname):
     
     session = requests.Session()
     try:
-        response = session.post(url, headers=headers, data=json.dumps(data), 
-                              verify=False, timeout=10)
+        response = session.post(url, headers=headers, data=json.dumps(data), verify=False, timeout=10)
+        #DEBUG REGENERATE TOKEN
+        print(response.json())
         if response.status_code == 200 and response.json().get("status_code") == 5:
             save_session(session, hostname)
             return session
